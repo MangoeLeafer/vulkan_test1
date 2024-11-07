@@ -1,8 +1,8 @@
 #pragma once
 
+#include "debug.hpp"
 #include "layers.hpp"
 #include "extensions.hpp"
-#include "debug.hpp"
 
 #include <vulkan/vulkan.hpp>
 
@@ -11,11 +11,7 @@
 
 class InstanceComponent {
 public:
-    VkInstance instance;
-    LayersComponent cLayers;
-    ExtensionsComponent cExtensions;
-
-    void create() {
+    void create(LayersComponent& cLayers, ExtensionsComponent& cExtensions) {
         // Defining some properties for the Vulkan driver.
         VkApplicationInfo appInfo{};
         appInfo.sType = VK_STRUCTURE_TYPE_APPLICATION_INFO;
@@ -31,21 +27,23 @@ public:
         createInfo.pApplicationInfo = &appInfo;
 
         // Extensions handling.
-        cExtensions.initExtensions();
-
-        std::vector<const char*> extensions = getExtensions();
+        std::vector<const char*> extensions = cExtensions.getExtensions();
         createInfo.enabledExtensionCount = static_cast<uint32_t>(extensions.size());
         createInfo.ppEnabledExtensionNames = extensions.data();
 
         // Layers handling.
-        cLayers.initLayers();
-
-        std::vector<const char*> layers = getLayers();
+        std::vector<const char*> layers = cLayers.getLayers();
         createInfo.enabledLayerCount = static_cast<uint32_t>(layers.size());
         createInfo.ppEnabledLayerNames = layers.data();
 
-        VkDebugUtilsMessengerCreateInfoEXT debugCreateInfo{};
-        DebugComponent::populateDebugMessengerCreateInfo(debugCreateInfo);
+        if (IN_DEBUG_ENV) {
+            VkDebugUtilsMessengerCreateInfoEXT debugCreateInfo{};
+            DebugComponent::populateDebugMessengerCreateInfo(debugCreateInfo);
+
+            createInfo.pNext = (VkDebugUtilsMessengerCreateInfoEXT*) &debugCreateInfo;
+        } else {
+            createInfo.pNext = nullptr;
+        }
 
         // Creation and validation of Vulkan instance.
         VkResult result = vkCreateInstance(&createInfo, nullptr, &instance);
@@ -61,28 +59,8 @@ public:
         vkDestroyInstance(instance, nullptr);
     }
 
+    VkInstance getInstance() {return instance;}
+
 private:
-    std::vector<const char*> getLayers() {
-        std::vector<const char*> allLayers(cLayers.layers);
-
-        allLayers.insert(
-            allLayers.end(),
-            cLayers.validationLayers.begin(),
-            cLayers.validationLayers.end()
-        );
-
-        return allLayers;
-    }
-
-    std::vector<const char*> getExtensions() {
-        std::vector<const char*> allExtensions(cExtensions.extensions);
-
-        allExtensions.insert(
-            allExtensions.end(),
-            cExtensions.debugExtensions.begin(),
-            cExtensions.debugExtensions.end()
-        );
-
-        return allExtensions;
-    }
+    VkInstance instance;
 };

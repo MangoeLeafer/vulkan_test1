@@ -12,6 +12,8 @@ class WindowComponent {
 public:
     SDL_Window* window;
 
+    SDL_Window* get_pWindow() {return window;}
+
     void init() {
         if (SDL_Init(SDL_INIT_VIDEO) != SDL_APP_SUCCESS) {
             std::cout << "Error: " << SDL_GetError() << "\n";

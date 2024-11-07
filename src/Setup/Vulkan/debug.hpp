@@ -13,8 +13,6 @@
 
 class DebugComponent {
 public:
-    VkDebugUtilsMessengerEXT debugMessenger;
-
     void setupDebugMessenger(VkInstance instance) {
         VkDebugUtilsMessengerCreateInfoEXT createInfo{};
         populateDebugMessengerCreateInfo(createInfo);
@@ -54,6 +52,8 @@ public:
     }
 
 private:
+    VkDebugUtilsMessengerEXT debugMessenger;
+
     VkResult createDebugUtilsMessengerEXT(
         VkInstance instance,
         const VkDebugUtilsMessengerCreateInfoEXT* pCreateInfo,

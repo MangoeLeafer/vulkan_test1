@@ -6,6 +6,9 @@ project(vulkan_test1
         LANGUAGES C CXX
     )
 
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED True)
+
 add_executable(${PROJECT_NAME} main.cpp)
 
 target_include_directories(${PROJECT_NAME} PUBLIC

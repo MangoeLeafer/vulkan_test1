@@ -10,7 +10,7 @@ namespace App {
 
         void init() {
             sdlHandler.init();
-            vkHandler.init();
+            vkHandler.init(sdlHandler.cWindow.get_pWindow());
         }
 
         void run(bool &keepRunning) {
