@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Setup/setup.hpp"
+#include "setup/setup.hpp"
 
 namespace App {
     class Application {

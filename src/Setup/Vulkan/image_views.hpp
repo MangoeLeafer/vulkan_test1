@@ -7,6 +7,8 @@
 
 class ImageViewsComponent {
 public:
+    std::vector<VkImageView> getSwapChainImageViews() {return swapChainImageViews;}
+
     void createImageViews(VkDevice device, std::vector<VkImage> swapChainImages, VkFormat swapChainImageFormat) {
         swapChainImageViews.resize(swapChainImages.size());
 

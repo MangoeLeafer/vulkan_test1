@@ -1,4 +1,4 @@
-# Install script for directory: C:/Users/jacki/Desktop/Projects_Directory/vulkan_test1/src/Setup/Vulkan
+# Install script for directory: C:/Users/jacki/Desktop/Projects_Directory/vulkan_test1/src/setup/Vulkan
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)

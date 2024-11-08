@@ -11,7 +11,7 @@
 
 class InstanceComponent {
 public:
-    void create(LayersComponent& cLayers, ExtensionsComponent& cExtensions) {
+    void create(LayersComponent cLayers, ExtensionsComponent cExtensions) {
         // Defining some properties for the Vulkan driver.
         VkApplicationInfo appInfo{};
         appInfo.sType = VK_STRUCTURE_TYPE_APPLICATION_INFO;
@@ -49,9 +49,7 @@ public:
         VkResult result = vkCreateInstance(&createInfo, nullptr, &instance);
 
         if (result != VK_SUCCESS) {
-            std::cout << "Vulkan instance creation failure code: " << result << "\n";
-
-            throw std::runtime_error("failed to create Vulkan instance!");
+            throw std::runtime_error("Failed to create Vulkan instance!");
         } 
     }
 

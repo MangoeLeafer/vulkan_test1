@@ -7,6 +7,7 @@
 #include <SDL3/SDL_vulkan.h>
 
 #include <iostream>
+#include <cstdint>
 
 struct SwapChainSupportDetails {
     VkSurfaceCapabilitiesKHR capabilities;
@@ -16,6 +17,7 @@ struct SwapChainSupportDetails {
 
 class SwapchainComponent {
 public:
+    VkExtent2D getSwapChainExtent() {return swapChainExtent;}
     VkFormat getSwapChainImageFormat() {return swapChainImageFormat;}
     std::vector<VkImage> getSwapChainImages() {return swapChainImages;}
 
@@ -65,7 +67,7 @@ public:
         createInfo.oldSwapchain = VK_NULL_HANDLE;
 
         if (vkCreateSwapchainKHR(device, &createInfo, nullptr, &swapChain) != VK_SUCCESS) {
-            throw std::runtime_error("failed to create swap chain!");
+            throw std::runtime_error("Failed to create swap chain!");
         }
     }
 
