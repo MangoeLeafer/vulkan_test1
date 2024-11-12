@@ -2,27 +2,34 @@
 
 #include "swapchain.hpp"
 #include "framebuffers.hpp"
+#include "settings.hpp"
 
 #include <vulkan/vulkan.hpp>
 
 #include <cstdint>
+#include <vector>
 
 class CommandBufferComponent {
 public:
+    std::vector<VkCommandBuffer> commandBuffers;
+
     void createCommandBuffer(VkDevice device, VkCommandPool commandPool) {
+        commandBuffers.resize(MAX_FRAMES_IN_FLIGHT);
+
         VkCommandBufferAllocateInfo allocInfo{};
         allocInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
         allocInfo.commandPool = commandPool;
         allocInfo.level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
-        allocInfo.commandBufferCount = 1;
+        allocInfo.commandBufferCount = static_cast<uint32_t>(commandBuffers.size());
 
-        if (vkAllocateCommandBuffers(device, &allocInfo, &commandBuffer) != VK_SUCCESS) {
+        if (vkAllocateCommandBuffers(device, &allocInfo, commandBuffers.data()) != VK_SUCCESS) {
             throw std::runtime_error("Failed to allocate command buffers!");
         }
     }
 
-    void recordCommandBuffer(SwapchainComponent cSwapChain, FramebuffersComponent cFramebuffers, uint32_t imageIndex, VkRenderPass renderPass, VkPipeline graphicsPipeline) {
+    void recordCommandBuffer(SwapchainComponent cSwapChain, FramebuffersComponent cFramebuffers, uint32_t imageIndex, VkRenderPass renderPass, VkPipeline graphicsPipeline, uint32_t commandBufferIndex) {
         VkExtent2D swapChainExtent = cSwapChain.getSwapChainExtent();
+        VkCommandBuffer& commandBuffer = commandBuffers[commandBufferIndex];
         
         VkCommandBufferBeginInfo beginInfo{};
         beginInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
@@ -50,8 +57,8 @@ public:
         VkViewport viewport{};
         viewport.x = 0.0f;
         viewport.y = 0.0f;
-        viewport.width = (float) swapChainExtent.width;
-        viewport.height = (float) swapChainExtent.height;
+        viewport.width = static_cast<float>(swapChainExtent.width);
+        viewport.height = static_cast<float>(swapChainExtent.height);
         viewport.minDepth = 0.0f;
         viewport.maxDepth = 1.0f;
         vkCmdSetViewport(commandBuffer, 0, 1, &viewport);
@@ -71,5 +78,4 @@ public:
     }
     
 private:
-    VkCommandBuffer commandBuffer;
 };

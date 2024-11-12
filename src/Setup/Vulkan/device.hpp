@@ -18,7 +18,7 @@ public:
     VkDevice getLogicalDevice() {return device;}
     VkPhysicalDevice getPhysicalDevice() {return physicalDevice;}
 
-    void createLogicalDevice(QueuesComponent cQueues, LayersComponent& cLayers, ExtensionsComponent& cExtensions, VkSurfaceKHR surface) {
+    void createLogicalDevice(QueuesComponent& cQueues, LayersComponent& cLayers, ExtensionsComponent& cExtensions, VkSurfaceKHR surface) {
         QueueFamilyIndices indices = cQueues.findQueueFamilies(physicalDevice, surface);
 
         std::vector<VkDeviceQueueCreateInfo> queueCreateInfos;
@@ -67,7 +67,7 @@ public:
         vkDestroyDevice(device, nullptr);
     }
 
-    void pickPhysicalDevice(QueuesComponent cQueues, ExtensionsComponent cExtensions, VkInstance instance, VkSurfaceKHR surface) {
+    void pickPhysicalDevice(QueuesComponent& cQueues, ExtensionsComponent& cExtensions, VkInstance instance, VkSurfaceKHR surface) {
         uint32_t deviceCount = 0;
         vkEnumeratePhysicalDevices(instance, &deviceCount, nullptr);
 
@@ -95,7 +95,7 @@ private:
     VkPhysicalDevice physicalDevice = VK_NULL_HANDLE;
     VkDevice device;
 
-    bool isDeviceSuitable(QueuesComponent cQueues, ExtensionsComponent cExtensions, VkPhysicalDevice device, VkSurfaceKHR surface) {
+    bool isDeviceSuitable(QueuesComponent& cQueues, ExtensionsComponent& cExtensions, VkPhysicalDevice device, VkSurfaceKHR surface) {
         // VkPhysicalDeviceProperties deviceProperties;
         // VkPhysicalDeviceFeatures deviceFeatures;
         // vkGetPhysicalDeviceProperties(device, &deviceProperties);

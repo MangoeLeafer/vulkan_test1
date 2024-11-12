@@ -20,9 +20,12 @@ struct QueueFamilyIndices {
 
 class QueuesComponent {
 public:
+    VkQueue graphicsQueue;
+    VkQueue presentQueue;
+
     void setDeviceQueues(VkDevice device, QueueFamilyIndices indices) {
-        vkGetDeviceQueue(device, indices.graphicsFamily.value(), 0, &graphicsQueue);
-        vkGetDeviceQueue(device, indices.presentFamily.value(), 0, &presentQueue);
+        vkGetDeviceQueue(device, 0, 0, &graphicsQueue);
+        vkGetDeviceQueue(device, 0, 0, &presentQueue);
     }
 
     QueueFamilyIndices findQueueFamilies(VkPhysicalDevice device, VkSurfaceKHR surface) {
@@ -58,6 +61,4 @@ public:
     }
 
 private:
-    VkQueue graphicsQueue;
-    VkQueue presentQueue;
 };

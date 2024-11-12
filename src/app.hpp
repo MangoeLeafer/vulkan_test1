@@ -14,7 +14,8 @@ namespace App {
         }
 
         void run(bool &keepRunning) {
-            sdlHandler.run(keepRunning);
+            sdlHandler.run(keepRunning, vkHandler);
+            vkHandler.drawFrame(sdlHandler.cWindow.get_pWindow());
         }
 
         void cleanUp() {

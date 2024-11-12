@@ -1,6 +1,8 @@
 #pragma once
 
+#include "../Vulkan/handler.hpp"
 #include "window.hpp"
+#include "events.hpp"
 
 #include <SDL3/SDL.h>
 
@@ -14,8 +16,8 @@ public:
         cWindow.init();
     }
 
-    void run(bool &keepRunning) {
-        cWindow.run(keepRunning);
+    void run(bool &keepRunning, VulkanHandler& cVkHandler) {
+        cWindow.run(keepRunning, cVkHandler);
     }
 
     void cleanUp() {
@@ -26,5 +28,4 @@ public:
     }
 
 private:
-
 };

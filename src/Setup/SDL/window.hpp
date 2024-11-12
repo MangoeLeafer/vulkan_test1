@@ -1,5 +1,8 @@
 #pragma once
 
+#include "events.hpp"
+#include "../Vulkan/handler.hpp"
+
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_vulkan.h>
 
@@ -21,16 +24,20 @@ public:
 
         SDL_Vulkan_LoadLibrary(nullptr);
 
-        window = SDL_CreateWindow("Vulkan Testing", WIDTH, HEIGHT, SDL_WINDOW_VULKAN);
+        window = SDL_CreateWindow("Vulkan Testing", WIDTH, HEIGHT, SDL_WINDOW_VULKAN | SDL_WINDOW_RESIZABLE);
     }
 
-    void run(bool &keepRunning) {
+    void run(bool& keepRunning, VulkanHandler& cVkHandler) {
         SDL_Event windowEvent;
 
         while(SDL_PollEvent(&windowEvent)) {
             if(windowEvent.type == SDL_EVENT_QUIT) {
                 keepRunning = false;
                 break;
+            }
+
+            if(windowEvent.type == SDL_EVENT_WINDOW_RESIZED) {
+                EventsComponent::eventResizedWindow(cVkHandler);
             }
         }
     }
